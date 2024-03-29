@@ -1,20 +1,29 @@
+from sign import Frames
 import tkinter as tk
 
-# Fonction pour gérer un événement
-def button_click():
-    label.config(text="Bouton cliqué!")
 
-# Création de la fenêtre principale
-root = tk.Tk()
-root.title("Ma Application Tkinter")
+def main():
+    # Initialize main window
+    root = tk.Tk()
+    root.title("Banque")
 
-# Création d'un widget Label
-label = tk.Label(root, text="Hello, Tkinter!")
-label.pack(pady=10)
+    # Get screen size
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
 
-# Création d'un widget Button
-button = tk.Button(root, text="Cliquez-moi!", command=button_click)
-button.pack(pady=5)
+    # Set main window size to half of the screen size
+    root.geometry(f"{screen_width // 2}x{screen_height // 2}")
 
-# Boucle principale de la fenêtre
-root.mainloop()
+    # Initialize frames
+    frames = Frames(root)
+
+    # Display welcome frame
+    frames.show_frame(frames.welcome_frame)
+
+    # Start application loop
+    root.mainloop()
+
+
+# Program entry point
+if __name__ == "__main__":
+    main()
