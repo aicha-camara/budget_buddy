@@ -20,4 +20,8 @@ class Frames:
         self.registration_frame = self.create_registration_frame()
         self.welcome_frame = self.create_welcome_frame()
 
-
+        # Hide all frames and show the specified one
+        def show_frame(self, frame):
+            for f in (self.welcome_frame, self.login_frame, self.registration_frame):
+                f.pack_forget()
+            frame.pack(fill="both", expand=True)
