@@ -84,3 +84,44 @@ class Frames:
         # Return the completed login frame
         return login_frame
 
+    def create_registration_frame(self):
+        # Create a new frame for the registration screen
+        registration_frame = ttk.Frame(self.root)
+
+        # Add a title label to the frame
+        ttk.Label(registration_frame, text="Inscription", font=("Arial", 16)).pack(pady=10)
+
+        # Add a label and entry for the username
+        ttk.Label(registration_frame, text="Nom d'utilisateur").pack()
+        username_entry = ttk.Entry(registration_frame)
+        username_entry.pack()
+
+        # Add a label and entry for the email
+        ttk.Label(registration_frame, text="Email").pack()
+        email_entry = ttk.Entry(registration_frame)
+        email_entry.pack()
+
+        # Add a label and entry for the password
+        ttk.Label(registration_frame, text="Mot de passe").pack()
+        password_entry = ttk.Entry(registration_frame, show="*")
+        password_entry.pack()
+
+        # Add a label and entry for the password confirmation
+        ttk.Label(registration_frame, text="Confirmer le mot de passe").pack()
+        confirm_password_entry = ttk.Entry(registration_frame, show="*")
+        confirm_password_entry.pack()
+
+        # Add a registration button that calls the register method with the entered details
+        ttk.Button(registration_frame, text="Inscription",
+                   command=lambda: self.register(username_entry.get(), email_entry.get(), password_entry.get(),
+                                                 confirm_password_entry.get())).pack(pady=10)
+
+        # Add a back button that shows the welcome frame
+        ttk.Button(registration_frame, text="Retour",
+                   command=lambda: self.show_frame(self.welcome_frame)).pack(pady=10)
+
+        # Return the completed registration frame
+        return registration_frame
+
+    # Validate registration and create user if valid
+
