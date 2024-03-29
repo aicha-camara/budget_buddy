@@ -55,3 +55,32 @@ class Frames:
         # Return the completed welcome frame
         return welcome_frame
 
+# Create and return the login frame
+    def create_login_frame(self):
+        # Create a new frame for the login screen
+        login_frame = ttk.Frame(self.root)
+
+        # Add a title label to the frame
+        ttk.Label(login_frame, text="Connexion", font=("Arial", 16)).pack(pady=10)
+
+        # Add a label and entry for the username
+        ttk.Label(login_frame, text="Email/Nom d'utilisateur").pack()
+        username_entry = ttk.Entry(login_frame)
+        username_entry.pack()
+
+        # Add a label and entry for the password
+        ttk.Label(login_frame, text="Mot de passe").pack()
+        password_entry = ttk.Entry(login_frame, show="*")
+        password_entry.pack()
+
+        # Add a login button that calls the login method with the entered username and password
+        ttk.Button(login_frame, text="Connexion",
+                   command=lambda: self.login(username_entry, password_entry)).pack(pady=10)
+
+        # Add a back button that shows the welcome frame
+        ttk.Button(login_frame, text="Retour",
+                   command=lambda: self.show_frame(self.welcome_frame)).pack(pady=10)
+
+        # Return the completed login frame
+        return login_frame
+
