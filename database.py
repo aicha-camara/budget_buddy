@@ -26,3 +26,9 @@ def check_user(username, password):
     curseur.close()
     connexion.close()
     return user
+
+def get_username(self):
+    requete = "SELECT pseudo FROM identifiant WHERE (pseudo = ? OR email = ?)"
+    self.curseur.execute(requete)
+    username = self.curseur.fetchall()
+    return username[0]
