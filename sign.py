@@ -125,3 +125,18 @@ class Frames:
 
     # Validate registration and create user if valid
 
+    def login(self, username_entry, password_entry):
+        # Get the entered username and password
+        pseudo_entre = username_entry.get()
+        mot_de_passe_entre = password_entry.get()
+
+        # Validate the login details
+        if not Validator.validate_login(pseudo_entre, mot_de_passe_entre):
+            # Show error message if validation fails
+
+            return
+
+        # If validation is successful, proceed to main frame creation
+        self.root.withdraw()
+        self.create_main_frame(pseudo_entre)
+
