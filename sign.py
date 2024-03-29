@@ -154,4 +154,12 @@ class Frames:
         # Show the login frame
         self.show_frame(self.login_frame)
 
+ def create_main_frame(self, username):
+        # Create a new top-level window for the main frame
+        self.main_frame = tk.Toplevel(self.root)
+        self.main_frame.title("MyDiscord")
+
+        # Add a label to display the username
+        ttk.Label(self.main_frame, text="Logged in as: " + username).pack(side=tk.TOP)
+
 
