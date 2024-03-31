@@ -28,7 +28,8 @@ class Validator:
                 return False
                 # Check if password meets complexity requirements
         if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$", password):
-            msgbox.showerror("Erreur","Le mot de passe doit contenir au moins une majuscule, une minuscule, un caractère spécial, un chiffre et doit avoir au minimum dix caractères.")
+            msgbox.showerror("Erreur", "Le mot de passe doit contenir au moins une majuscule, une minuscule, "
+                                       "un caractère spécial, un chiffre et doit avoir au minimum dix caractères.")
             return False
         return True
 
