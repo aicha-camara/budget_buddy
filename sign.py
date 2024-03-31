@@ -96,6 +96,16 @@ class Frames:
         # Add a title label to the frame
         ttk.Label(registration_frame, text="Inscription", font=("Arial", 16)).pack(pady=10)
 
+        # Add a label and entry for the lastname
+        ttk.Label(registration_frame, text="Nom").pack()
+        lastname_entry = ttk.Entry(registration_frame)
+        lastname_entry.pack()
+
+        # Add a label and entry for the name
+        ttk.Label(registration_frame, text="Prénom").pack()
+        name_entry = ttk.Entry(registration_frame)
+        name_entry.pack()
+
         # Add a label and entry for the username
         ttk.Label(registration_frame, text="Nom d'utilisateur").pack()
         username_entry = ttk.Entry(registration_frame)
@@ -118,7 +128,8 @@ class Frames:
 
         # Add a registration button that calls the register method with the entered details
         ttk.Button(registration_frame, text="Inscription",
-                   command=lambda: self.register(username_entry.get(), email_entry.get(), password_entry.get(),
+                   command=lambda: self.register(lastname_entry.get(), name_entry.get(), username_entry.get(),
+                                                 email_entry.get(), password_entry.get(),
                                                  confirm_password_entry.get())).pack(pady=10)
 
         # Add a back button that shows the welcome frame
@@ -145,13 +156,13 @@ class Frames:
         self.root.withdraw()
         self.create_main_frame(pseudo_entre)
 
-    def register(self, username, email, password, confirm_password):
+    def register(self, lastname, name, username, email, password, confirm_password):
         # Validate the registration details
         if not Validator.validate_registration(username, email, password, confirm_password):
             return
 
         # If validation is successful, create a new user
-        create_user(username, email, password)
+        create_user(lastname, name, username, email, password)
 
         # Show a success message to the user
         msgbox.showinfo("Succès", "Inscription réussie. Vous pouvez maintenant vous connecter.")
