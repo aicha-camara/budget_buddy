@@ -6,7 +6,7 @@ def __init__(self, host, user, password, database):
         host="localhost",
         user="root",
         password="za9?-U5zwD4-6#L",
-        database="myDiscord"
+        database="budget_app"
     )
     self.curseur = self.connexion.cursor()
 
@@ -15,11 +15,11 @@ def check_user(username, password):
         host="localhost",
         user="root",
         password="za9?-U5zwD4-6#L",
-        database="myDiscord"
+        database="budget_app"
     )
     curseur = connexion.cursor()
 
-    requete = "SELECT * FROM identifiant WHERE pseudo = %s AND mots_de_passe = %s"
+    requete = "SELECT * FROM id WHERE pseudo = %s AND mots_de_passe = %s"
     valeurs = (username, password)
     curseur.execute(requete, valeurs)
     user = curseur.fetchone()
@@ -28,22 +28,22 @@ def check_user(username, password):
     return user
 
 def get_username(self):
-    requete = "SELECT pseudo FROM identifiant WHERE (pseudo = ? OR email = ?)"
+    requete = "SELECT pseudo FROM id WHERE (pseudo = ? OR email = ?)"
     self.curseur.execute(requete)
     username = self.curseur.fetchall()
     return username[0]
 
-def create_user(username, email, password):
+def create_user(lastname,name,username, email, password):
     connexion = mysql.connector.connect(
         host="localhost",
         user="root",
         password="za9?-U5zwD4-6#L",
-        database="myDiscord"
+        database="budget_app"
     )
     curseur = connexion.cursor()
 
-    requete = "INSERT INTO identifiant (pseudo, email, mots_de_passe) VALUES (%s, %s, %s)"
-    valeurs = (username, email, password)
+    requete = "INSERT INTO id (nom, prenom, pseudo, email, mots_de_passe) VALUES (%s,%s,%s, %s, %s)"
+    valeurs = (lastname, name, username, email, password)
     curseur.execute(requete, valeurs)
 
     connexion.commit()  # Valider les modifications dans la base de données
