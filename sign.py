@@ -7,7 +7,6 @@ from validator import Validator
 class Frames:
     def __init__(self, root):
         self.root = root
-        self.username = None
         self.main_frame = None
         self.message_area = None
         self.message_container = None
@@ -111,11 +110,6 @@ class Frames:
         name_entry = ttk.Entry(registration_frame)
         name_entry.pack()
 
-        # Add a label and entry for the username
-        ttk.Label(registration_frame, text="Nom d'utilisateur").pack()
-        username_entry = ttk.Entry(registration_frame)
-        username_entry.pack()
-
         # Add a label and entry for the email
         ttk.Label(registration_frame, text="Email").pack()
         email_entry = ttk.Entry(registration_frame)
@@ -133,7 +127,7 @@ class Frames:
 
         # Add a registration button that calls the register method with the entered details
         ttk.Button(registration_frame, text="Inscription",
-                   command=lambda: self.register(lastname_entry.get(), name_entry.get(), username_entry.get(),
+                   command=lambda: self.register(lastname_entry.get(), name_entry.get(),
                                                  email_entry.get(), password_entry.get(),
                                                  confirm_password_entry.get())).pack(pady=10)
 
@@ -146,15 +140,14 @@ class Frames:
 
     # Validate registration and create user if valid
 
-    def login(self, lastname_entry,name_entry, password_entry):
+    def login(self, lastname_entry, name_entry, password_entry):
         # Get the entered username and password
         lastname_entre = lastname_entry.get()
         name_entre = name_entry.get()
         mot_de_passe_entre = password_entry.get()
 
-
         # Validate the login details
-        if not Validator.validate_login(lastname_entre,name_entre, mot_de_passe_entre):
+        if not Validator.validate_login(lastname_entre, name_entre, mot_de_passe_entre):
             # Show error message if validation fails
 
             return
@@ -163,13 +156,13 @@ class Frames:
         self.root.withdraw()
         self.create_main_frame(pseudo)
 
-    def register(self, lastname, name, username, email, password, confirm_password):
+    def register(self, lastname, name, email, password, confirm_password):
         # Validate the registration details
-        if not Validator.validate_registration(username, email, password, confirm_password):
+        if not Validator.validate_registration(lastname, name, email, password, confirm_password):
             return
 
         # If validation is successful, create a new user
-        create_user(lastname, name, username, email, password)
+        create_user(lastname, name, email, password)
 
         # Show a success message to the user
         msgbox.showinfo("Succès", "Inscription réussie. Vous pouvez maintenant vous connecter.")
@@ -191,5 +184,3 @@ class Frames:
         # Create a new frame to display additional information
         info_frame = ttk.Frame(self.main_frame)
         info_frame.pack(side=tk.TOP, padx=10, pady=10)  # Adjust padding as needed
-
-
