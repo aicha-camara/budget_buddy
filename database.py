@@ -10,7 +10,7 @@ def __init__(self, host, user, password, database):
     )
     self.curseur = self.connexion.cursor()
 
-def check_user(username, password):
+def check_user(lastname, name, password):
     connexion = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -19,8 +19,8 @@ def check_user(username, password):
     )
     curseur = connexion.cursor()
 
-    requete = "SELECT * FROM id WHERE pseudo = %s AND mots_de_passe = %s"
-    valeurs = (username, password)
+    requete = "SELECT * FROM id WHERE nom = %s AND prenom= %s AND mots_de_passe = %s"
+    valeurs = (lastname, name, password)
     curseur.execute(requete, valeurs)
     user = curseur.fetchone()
     curseur.close()
@@ -32,8 +32,7 @@ def get_username(self):
     self.curseur.execute(requete)
     username = self.curseur.fetchall()
     return username[0]
-
-def create_user(lastname,name,username, email, password):
+def create_user(lastname, name, email, password):
     connexion = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -42,8 +41,8 @@ def create_user(lastname,name,username, email, password):
     )
     curseur = connexion.cursor()
 
-    requete = "INSERT INTO id (nom, prenom, pseudo, email, mots_de_passe) VALUES (%s,%s,%s, %s, %s)"
-    valeurs = (lastname, name, username, email, password)
+    requete = "INSERT INTO id (nom, prenom, email, mots_de_passe) VALUES (%s,%s, %s, %s)"
+    valeurs = (lastname, name, email, password)
     curseur.execute(requete, valeurs)
 
     connexion.commit()  # Valider les modifications dans la base de données
