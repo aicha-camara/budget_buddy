@@ -32,7 +32,7 @@ class Frames:
         welcome_frame = ttk.Frame(self.root)
 
         # Load the background image
-        self.background_image = tk.PhotoImage(file="pattern.png")
+        self.background_image = tk.PhotoImage(file="assets/pattern.png")
         # Create a label to hold the background image
         background_label = ttk.Label(welcome_frame, image=self.background_image)
         background_label.place(x=0, y=0, relwidth=1, relheight=1)
