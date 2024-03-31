@@ -68,9 +68,14 @@ class Frames:
         ttk.Label(login_frame, text="Connexion", font=("Arial", 16)).pack(pady=10)
 
         # Add a label and entry for the username
-        ttk.Label(login_frame, text="Email/Nom d'utilisateur").pack()
-        username_entry = ttk.Entry(login_frame)
-        username_entry.pack()
+        ttk.Label(login_frame, text="Nom").pack()
+        lastname_entry = ttk.Entry(login_frame)
+        lastname_entry.pack()
+
+        # Add a label and entry for the username
+        ttk.Label(login_frame, text="Prenom").pack()
+        name_entry = ttk.Entry(login_frame)
+        name_entry.pack()
 
         # Add a label and entry for the password
         ttk.Label(login_frame, text="Mot de passe").pack()
@@ -79,7 +84,7 @@ class Frames:
 
         # Add a login button that calls the login method with the entered username and password
         ttk.Button(login_frame, text="Connexion",
-                   command=lambda: self.login(username_entry, password_entry)).pack(pady=10)
+                   command=lambda: self.login(lastname_entry, name_entry, password_entry)).pack(pady=10)
 
         # Add a back button that shows the welcome frame
         ttk.Button(login_frame, text="Retour",
@@ -141,20 +146,22 @@ class Frames:
 
     # Validate registration and create user if valid
 
-    def login(self, username_entry, password_entry):
+    def login(self, lastname_entry,name_entry, password_entry):
         # Get the entered username and password
-        pseudo_entre = username_entry.get()
+        lastname_entre = lastname_entry.get()
+        name_entre = name_entry.get()
         mot_de_passe_entre = password_entry.get()
 
+
         # Validate the login details
-        if not Validator.validate_login(pseudo_entre, mot_de_passe_entre):
+        if not Validator.validate_login(lastname_entre,name_entre, mot_de_passe_entre):
             # Show error message if validation fails
 
             return
-
+        pseudo = (lastname_entre, name_entre)
         # If validation is successful, proceed to main frame creation
         self.root.withdraw()
-        self.create_main_frame(pseudo_entre)
+        self.create_main_frame(pseudo)
 
     def register(self, lastname, name, username, email, password, confirm_password):
         # Validate the registration details
@@ -170,10 +177,19 @@ class Frames:
         # Show the login frame
         self.show_frame(self.login_frame)
 
-    def create_main_frame(self, username):
+    def create_main_frame(self, pseudo):
+        lastname, name = pseudo
         # Create a new top-level window for the main frame
         self.main_frame = tk.Toplevel(self.root)
-        self.main_frame.title("MyDiscord")
-
+        self.main_frame.title("Bank")
+        self.background_image = tk.PhotoImage(file="assets/pattern.png")
+        # Create a label to hold the background image
+        background_label = ttk.Label(self.main_frame, image=self.background_image)
+        background_label.place(x=0, y=0, relwidth=1, relheight=1)
         # Add a label to display the username
-        ttk.Label(self.main_frame, text="Connecter en tant que: " + username).pack(side=tk.TOP)
+        ttk.Label(self.main_frame, text="Connecter en tant que: " + lastname + " " + name).pack(side=tk.TOP)
+        # Create a new frame to display additional information
+        info_frame = ttk.Frame(self.main_frame)
+        info_frame.pack(side=tk.TOP, padx=10, pady=10)  # Adjust padding as needed
+
+
