@@ -3,6 +3,7 @@ import tkinter.messagebox as msgbox
 from tkinter import ttk
 from database import create_user
 from validator import Validator
+from database import show_transactions
 
 class Frames:
     def __init__(self, root):
@@ -152,9 +153,10 @@ class Frames:
 
             return
         pseudo = (lastname_entre, name_entre)
+        transactions = show_transactions(lastname_entre, name_entre)
         # If validation is successful, proceed to main frame creation
         self.root.withdraw()
-        self.create_main_frame(pseudo)
+        self.create_main_frame(pseudo, transactions)
 
     def register(self, lastname, name, email, password, confirm_password):
         # Validate the registration details
@@ -170,17 +172,58 @@ class Frames:
         # Show the login frame
         self.show_frame(self.login_frame)
 
-    def create_main_frame(self, pseudo):
+    def create_main_frame(self, pseudo, transactions):
         lastname, name = pseudo
+
         # Create a new top-level window for the main frame
         self.main_frame = tk.Toplevel(self.root)
         self.main_frame.title("Bank")
-        self.background_image = tk.PhotoImage(file="assets/pattern.png")
-        # Create a label to hold the background image
-        background_label = ttk.Label(self.main_frame, image=self.background_image)
-        background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Create a new frame to hold all the elements
+        main_container = ttk.Frame(self.main_frame)
+        main_container.pack(fill="both", expand=True)
+
         # Add a label to display the username
-        ttk.Label(self.main_frame, text="Connecter en tant que: " + lastname + " " + name).pack(side=tk.TOP)
+        ttk.Label(main_container, text="Connecté en tant que: " + lastname + " " + name).pack(side=tk.TOP, pady=10)
+
         # Create a new frame to display additional information
-        info_frame = ttk.Frame(self.main_frame)
+        info_frame = ttk.Frame(main_container)
         info_frame.pack(side=tk.TOP, padx=10, pady=10)  # Adjust padding as needed
+
+        # Headers for the columns
+        headers = ["Nom", "Description", "Montant", "Type", "Date"]
+
+        # Function to sort transactions based on column index
+        def sort_transactions(col_index):
+            if col_index != 1:  # Do not sort if the column index corresponds to the Description column
+                # Clear existing transaction rows in the info_frame
+                for widget in info_frame.winfo_children():
+                    if isinstance(widget, ttk.Label):
+                        widget.destroy()
+
+                sorted_transactions = sorted(transactions, key=lambda x: x[col_index])
+                self.show_transactions_table(info_frame, headers, sorted_transactions)
+
+        # Clear existing widgets in the info_frame
+        for widget in info_frame.winfo_children():
+            widget.destroy()
+
+        # Create clickable headers
+        for col, header in enumerate(headers):
+            (ttk.Button(info_frame, text=header, command=lambda col_index=col: sort_transactions(col_index)).grid
+             (row=0, column=col, padx=5, pady=5, sticky="w"))
+
+        # Show initial transactions table
+        self.show_transactions_table(info_frame, headers, transactions)
+
+    # Function to display transactions in a table format
+    @staticmethod
+    def show_transactions_table(info_frame, headers, transactions):
+        # Display transactions in a table format
+        for idx, transaction in enumerate(transactions):
+            for col, value in enumerate(transaction):
+                ttk.Label(info_frame, text=value).grid(row=idx + 2, column=col, sticky="w", padx=5, pady=5)
+
+        # Add separator after transactions
+        ttk.Separator(info_frame, orient="horizontal").grid(row=len(transactions) + 2, columnspan=len(headers),
+                                                            sticky="ew", pady=5)
