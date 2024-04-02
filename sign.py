@@ -4,9 +4,13 @@ from tkinter import ttk
 from database import create_user
 from validator import Validator
 from database import show_transactions
+from database import get_solde
+
 
 class Frames:
     def __init__(self, root):
+        self.info_frame = None
+        self.main_container = None
         self.root = root
         self.main_frame = None
         self.message_area = None
@@ -172,6 +176,32 @@ class Frames:
         # Show the login frame
         self.show_frame(self.login_frame)
 
+    @staticmethod
+    def show_transactions_table(info_frame, headers, transactions):
+        # Display transactions in a table format
+        for idx, transaction in enumerate(transactions):
+            for col, value in enumerate(transaction):
+                label = ttk.Label(info_frame, text=value, font=("Verdana", 10), background="#36393e",
+                                  foreground="white")
+
+                # Change color based on sign of the amount
+                if col == 2:  # Assuming montant is at index 2 in the transactions list
+                    montant = float(value)
+                    if montant > 0:
+                        label.config(foreground="green")
+                    elif montant < 0:
+                        label.config(foreground="red")
+
+                label.grid(row=idx + 2, column=col, sticky="ew", padx=5, pady=5)
+
+        # Add separator after transactions
+        ttk.Separator(info_frame, orient="horizontal").grid(row=len(transactions) + 2, columnspan=len(headers),
+                                                            sticky="ew", pady=5)
+
+    def disconnect(self):
+        # Fermer la fenêtre principale
+        self.main_frame.destroy()
+
     def create_main_frame(self, pseudo, transactions):
         lastname, name = pseudo
 
@@ -179,16 +209,36 @@ class Frames:
         self.main_frame = tk.Toplevel(self.root)
         self.main_frame.title("Bank")
 
+        # Set background color of the main frame
+        self.main_frame.configure(bg="#282b30")
+
+        # Load the background image
+        self.background_image = tk.PhotoImage(file="assets/pattern.png")
+        # Create a label to hold the background image
+        background_label = ttk.Label(self.main_frame, image=self.background_image)
+        background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
         # Create a new frame to hold all the elements
-        main_container = ttk.Frame(self.main_frame)
-        main_container.pack(fill="both", expand=True)
+        main_container = tk.Frame(self.main_frame, background="#282b30")
+        main_container.pack(fill="both", expand=True, padx=20, pady=20)  # Added padding
 
         # Add a label to display the username
-        ttk.Label(main_container, text="Connecté en tant que: " + lastname + " " + name).pack(side=tk.TOP, pady=10)
+        ttk.Label(main_container, text="Re-bonjour " + lastname + " " + name + " !", font=("Verdana", 15),
+                  background="#282b30", foreground="white").pack(
+            side=tk.TOP, pady=10)
+
+        # Créer un label pour afficher le solde avec récupération directe depuis la base de données
+        ttk.Label(main_container, text="Solde: " + str(get_solde(lastname, name)), font=("Verdana", 12),
+                  background="#282b30", foreground="white").pack(
+            side=tk.TOP, pady=10)
+
+        ttk.Label(main_container, text="Connecté en tant que: " + lastname + " " + name, background="#282b30",
+                  foreground="white").pack(side=tk.BOTTOM, pady=10)
+        ttk.Button(main_container, text="Déconnexion", command=self.disconnect).pack(side=tk.BOTTOM, pady=10)
 
         # Create a new frame to display additional information
-        info_frame = ttk.Frame(main_container)
-        info_frame.pack(side=tk.TOP, padx=10, pady=10)  # Adjust padding as needed
+        info_frame = tk.Frame(main_container, background="#36393e")
+        info_frame.pack(side=tk.TOP, padx=10, pady=10, fill="both", expand=True)  # Added fill and expand
 
         # Headers for the columns
         headers = ["Nom", "Description", "Montant", "Type", "Date"]
@@ -204,26 +254,10 @@ class Frames:
                 sorted_transactions = sorted(transactions, key=lambda x: x[col_index])
                 self.show_transactions_table(info_frame, headers, sorted_transactions)
 
-        # Clear existing widgets in the info_frame
-        for widget in info_frame.winfo_children():
-            widget.destroy()
-
         # Create clickable headers
         for col, header in enumerate(headers):
-            (ttk.Button(info_frame, text=header, command=lambda col_index=col: sort_transactions(col_index)).grid
-             (row=0, column=col, padx=5, pady=5, sticky="w"))
+            ttk.Button(info_frame, text=header, command=lambda col_index=col: sort_transactions(col_index)).grid(
+                row=0, column=col, padx=5, pady=5, sticky="ew")  # Added sticky
 
         # Show initial transactions table
         self.show_transactions_table(info_frame, headers, transactions)
-
-    # Function to display transactions in a table format
-    @staticmethod
-    def show_transactions_table(info_frame, headers, transactions):
-        # Display transactions in a table format
-        for idx, transaction in enumerate(transactions):
-            for col, value in enumerate(transaction):
-                ttk.Label(info_frame, text=value).grid(row=idx + 2, column=col, sticky="w", padx=5, pady=5)
-
-        # Add separator after transactions
-        ttk.Separator(info_frame, orient="horizontal").grid(row=len(transactions) + 2, columnspan=len(headers),
-                                                            sticky="ew", pady=5)
