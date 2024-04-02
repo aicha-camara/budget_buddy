@@ -49,3 +49,26 @@ def create_user(lastname, name, email, password):
 
     curseur.close()
     connexion.close()
+
+def show_transactions(lastname, name):
+    connexion = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="za9?-U5zwD4-6#L",  # Modifier avec votre mot de passe
+        database="budget_app"
+    )
+    curseur = connexion.cursor()
+
+    requete = ("SELECT nom, description, montant, type, date FROM transactions WHERE utilisateur_id=(SELECT id FROM id "
+               "WHERE nom=%s AND prenom=%s)")
+    valeurs = (lastname, name)
+    curseur.execute(requete, valeurs)
+
+    transactions = []
+    for row in curseur.fetchall():
+        transactions.append(row)
+
+    curseur.close()
+    connexion.close()
+
+    return transactions
