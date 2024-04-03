@@ -5,7 +5,7 @@ from database import create_user
 from validator import Validator
 from database import show_transactions
 from database import get_solde
-
+import matplotlib.pyplot as plt
 
 class Frames:
     def __init__(self, root):
@@ -243,7 +243,6 @@ class Frames:
         # Headers for the columns
         headers = ["Nom", "Description", "Montant", "Type", "Date"]
 
-        # Function to sort transactions based on column index
         def sort_transactions(col_index):
             if col_index != 1:  # Do not sort if the column index corresponds to the Description column
                 # Clear existing transaction rows in the info_frame
@@ -260,4 +259,46 @@ class Frames:
                 row=0, column=col, padx=5, pady=5, sticky="ew")  # Added sticky
 
         # Show initial transactions table
+        # Show initial transactions table
         self.show_transactions_table(info_frame, headers, transactions)
+
+        # Create and display expenses by month graph
+        self.create_graph(transactions)
+
+    @staticmethod
+    def create_graph(transactions):
+        # Créer un dictionnaire pour stocker les dépenses par mois
+        expenses_by_month = {}
+
+        # Parcourir toutes les transactions et calculer les dépenses par mois
+        for transaction in transactions:
+            # Convertir la date en format "AAAA-MM-JJ" en chaîne de caractères
+            date_str = transaction[4].strftime("%Y-%m-%d")
+            month = date_str.split("-")[1]  # Extraire le mois
+            montant = float(transaction[2])  # La colonne 2 contient le montant de la transaction
+
+            # Vérifier si la transaction est une dépense (montant négatif)
+            if montant < 0:
+                if month not in expenses_by_month:
+                    expenses_by_month[month] = 0
+                expenses_by_month[month] += abs(montant)  # Ajouter la valeur absolue du montant à la dépense mensuelle
+
+        # Trier les mois par ordre croissant
+        sorted_months = sorted(expenses_by_month.keys())
+
+        # Extraire les dépenses et les mois triés
+        expenses = [expenses_by_month[month] for month in sorted_months]
+        months = [f'Mois {month}' for month in
+                  sorted_months]  # Vous pouvez utiliser le nom complet du mois si disponible
+
+        # Créer le graphique
+        plt.figure(figsize=(10, 6))
+        plt.plot(months, expenses, marker='o', linestyle='-')
+        plt.xlabel('Mois')
+        plt.ylabel('Dépenses (€)')
+        plt.title('Dépenses par mois')
+        plt.xticks(rotation=45)  # Faire pivoter les étiquettes des mois pour une meilleure lisibilité
+        plt.tight_layout()
+        plt.savefig('expenses_by_month_graph.png')
+        # Afficher le graphique
+        plt.show()
