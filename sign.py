@@ -299,6 +299,6 @@ class Frames:
         plt.title('Dépenses par mois')
         plt.xticks(rotation=45)  # Faire pivoter les étiquettes des mois pour une meilleure lisibilité
         plt.tight_layout()
-        plt.savefig('expenses_by_month_graph.png')
+        plt.savefig('assets/expenses_by_month_graph.png')
         # Afficher le graphique
         plt.show()
