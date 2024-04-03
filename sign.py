@@ -19,173 +19,174 @@ class Frames:
         self.send_button = None
         self.background_image = None
 
-        # Create initial frames
+        # Créer les frames initiales
         self.login_frame = self.create_login_frame()
         self.registration_frame = self.create_registration_frame()
         self.welcome_frame = self.create_welcome_frame()
 
-    # Hide all frames and show the specified one
+    # Masquer toutes les frames et afficher celle spécifiée
     def show_frame(self, frame):
         for f in (self.welcome_frame, self.login_frame, self.registration_frame):
             f.pack_forget()
         frame.pack(fill="both", expand=True)
 
-    # Create and return the welcome frame
+    # Créer et retourner la frame de bienvenue
     def create_welcome_frame(self):
-        # Create a new frame for the welcome screen
+        # Créer une nouvelle frame pour l'écran de bienvenue
         welcome_frame = ttk.Frame(self.root)
 
-        # Load the background image
+        # Charger l'image de fond
         self.background_image = tk.PhotoImage(file="assets/pattern.png")
-        # Create a label to hold the background image
+        # Créer une étiquette pour contenir l'image de fond
         background_label = ttk.Label(welcome_frame, image=self.background_image)
         background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # Create a container for all elements
-        container = ttk.Frame(welcome_frame)
+        # Créer un conteneur pour tous les éléments
+        container = tk.Frame(welcome_frame, background="#282b30")
         container.pack(expand=True)
 
-        # Add a welcome label to the container
-        ttk.Label(container, text="Bonjour cher client!", font=("Helvetica", 16)).pack(pady=20)
+        # Ajouter une étiquette de bienvenue au conteneur
+        ttk.Label(container, text="Bienvenue sur mybudget!", background="#282b30", foreground="white",
+                  font=("Helvetica", 16)).pack(pady=20)
 
-        # Create a container for the buttons
-        button_container = ttk.Frame(container)
+        # Créer un conteneur pour les boutons
+        button_container = tk.Frame(container, background="#282b30")
         button_container.pack(pady=10)
 
-        # Add a login button to the button container
+        # Ajouter un bouton de connexion au conteneur de boutons
         ttk.Button(button_container, text="Se connecter",
                    command=lambda: self.show_frame(self.login_frame)).pack(side=tk.LEFT, padx=10)
 
-        # Add a registration button to the button container
+        # Ajouter un bouton d'inscription au conteneur de boutons
         ttk.Button(button_container, text="S'inscrire",
                    command=lambda: self.show_frame(self.registration_frame)).pack(side=tk.LEFT, padx=10)
 
-        # Return the completed welcome frame
+        # Retourner la frame de bienvenue complétée
         return welcome_frame
 
-    # Create and return the login frame
+    # Créer et retourner la frame de connexion
     def create_login_frame(self):
-        # Create a new frame for the login screen
+        # Créer une nouvelle frame pour l'écran de connexion
         login_frame = ttk.Frame(self.root)
-
-        # Add a title label to the frame
+        # Ajouter une étiquette de titre à la frame
         ttk.Label(login_frame, text="Connexion", font=("Arial", 16)).pack(pady=10)
 
-        # Add a label and entry for the username
+        # Ajouter une étiquette et une entrée pour le nom
         ttk.Label(login_frame, text="Nom").pack()
         lastname_entry = ttk.Entry(login_frame)
         lastname_entry.pack()
 
-        # Add a label and entry for the username
-        ttk.Label(login_frame, text="Prenom").pack()
+        # Ajouter une étiquette et une entrée pour le prénom
+        ttk.Label(login_frame, text="Prénom").pack()
         name_entry = ttk.Entry(login_frame)
         name_entry.pack()
 
-        # Add a label and entry for the password
+        # Ajouter une étiquette et une entrée pour le mot de passe
         ttk.Label(login_frame, text="Mot de passe").pack()
         password_entry = ttk.Entry(login_frame, show="*")
         password_entry.pack()
 
-        # Add a login button that calls the login method with the entered username and password
+        # Ajouter un bouton de connexion qui appelle la méthode de connexion
+        # avec le nom d'utilisateur et le mot de passe saisis
         ttk.Button(login_frame, text="Connexion",
                    command=lambda: self.login(lastname_entry, name_entry, password_entry)).pack(pady=10)
 
-        # Add a back button that shows the welcome frame
+        # Ajouter un bouton de retour qui affiche la frame de bienvenue
         ttk.Button(login_frame, text="Retour",
                    command=lambda: self.show_frame(self.welcome_frame)).pack(pady=10)
 
-        # Return the completed login frame
+        # Retourner la frame de connexion complétée
         return login_frame
 
-    # Create and return the registration frame
+    # Créer et retourner la frame d'inscription
     def create_registration_frame(self):
-        # Create a new frame for the registration screen
+        # Créer une nouvelle frame pour l'écran d'inscription
         registration_frame = ttk.Frame(self.root)
 
-        # Add a title label to the frame
+        # Ajouter une étiquette de titre à la frame
         ttk.Label(registration_frame, text="Inscription", font=("Arial", 16)).pack(pady=10)
 
-        # Add a label and entry for the lastname
+        # Ajouter une étiquette et une entrée pour le nom
         ttk.Label(registration_frame, text="Nom").pack()
         lastname_entry = ttk.Entry(registration_frame)
         lastname_entry.pack()
 
-        # Add a label and entry for the name
+        # Ajouter une étiquette et une entrée pour le prénom
         ttk.Label(registration_frame, text="Prénom").pack()
         name_entry = ttk.Entry(registration_frame)
         name_entry.pack()
 
-        # Add a label and entry for the email
+        # Ajouter une étiquette et une entrée pour l'e-mail
         ttk.Label(registration_frame, text="Email").pack()
         email_entry = ttk.Entry(registration_frame)
         email_entry.pack()
 
-        # Add a label and entry for the password
+        # Ajouter une étiquette et une entrée pour le mot de passe
         ttk.Label(registration_frame, text="Mot de passe").pack()
         password_entry = ttk.Entry(registration_frame, show="*")
         password_entry.pack()
 
-        # Add a label and entry for the password confirmation
+        # Ajouter une étiquette et une entrée pour la confirmation du mot de passe
         ttk.Label(registration_frame, text="Confirmer le mot de passe").pack()
         confirm_password_entry = ttk.Entry(registration_frame, show="*")
         confirm_password_entry.pack()
 
-        # Add a registration button that calls the register method with the entered details
+        # Ajouter un bouton d'inscription qui appelle la méthode d'inscription avec les détails saisis
         ttk.Button(registration_frame, text="Inscription",
                    command=lambda: self.register(lastname_entry.get(), name_entry.get(),
                                                  email_entry.get(), password_entry.get(),
                                                  confirm_password_entry.get())).pack(pady=10)
 
-        # Add a back button that shows the welcome frame
+        # Ajouter un bouton de retour qui affiche la frame de bienvenue
         ttk.Button(registration_frame, text="Retour",
                    command=lambda: self.show_frame(self.welcome_frame)).pack(pady=10)
 
-        # Return the completed registration frame
+        # Retourner la frame d'inscription complétée
         return registration_frame
 
-    # Validate registration and create user if valid
-
+    # Valider l'inscription et créer l'utilisateur si valide
     def login(self, lastname_entry, name_entry, password_entry):
-        # Get the entered username and password
+        # Obtenir le nom d'utilisateur et le mot de passe saisis
         lastname_entre = lastname_entry.get()
         name_entre = name_entry.get()
         mot_de_passe_entre = password_entry.get()
 
-        # Validate the login details
+        # Valider les détails de connexion
         if not Validator.validate_login(lastname_entre, name_entre, mot_de_passe_entre):
-            # Show error message if validation fails
-
+            # Afficher un message d'erreur si la validation échoue
             return
         pseudo = (lastname_entre, name_entre)
         transactions = show_transactions(lastname_entre, name_entre)
-        # If validation is successful, proceed to main frame creation
+        # Si la validation réussit, procéder à la création de la frame principale
         self.root.withdraw()
         self.create_main_frame(pseudo, transactions)
 
+    # Valider l'inscription et créer l'utilisateur si valide
     def register(self, lastname, name, email, password, confirm_password):
-        # Validate the registration details
+        # Valider les détails d'inscription
         if not Validator.validate_registration(lastname, name, email, password, confirm_password):
             return
 
-        # If validation is successful, create a new user
+        # Si la validation réussit, créer un nouvel utilisateur
         create_user(lastname, name, email, password)
 
-        # Show a success message to the user
+        # Afficher un message de succès à l'utilisateur
         msgbox.showinfo("Succès", "Inscription réussie. Vous pouvez maintenant vous connecter.")
 
-        # Show the login frame
+        # Afficher la frame de connexion
         self.show_frame(self.login_frame)
 
+    # Afficher les transactions dans un tableau
     @staticmethod
     def show_transactions_table(info_frame, headers, transactions):
-        # Display transactions in a table format
+        # Afficher les transactions dans un format de tableau
         for idx, transaction in enumerate(transactions):
             for col, value in enumerate(transaction):
                 label = ttk.Label(info_frame, text=value, font=("Verdana", 10), background="#36393e",
                                   foreground="white")
 
-                # Change color based on sign of the amount
-                if col == 2:  # Assuming montant is at index 2 in the transactions list
+                # Changer la couleur en fonction du signe du montant
+                if col == 2:  # Supposant que montant est à l'index 2 dans la liste des transactions
                     montant = float(value)
                     if montant > 0:
                         label.config(foreground="green")
@@ -194,35 +195,37 @@ class Frames:
 
                 label.grid(row=idx + 2, column=col, sticky="ew", padx=5, pady=5)
 
-        # Add separator after transactions
+        # Ajouter un séparateur après les transactions
         ttk.Separator(info_frame, orient="horizontal").grid(row=len(transactions) + 2, columnspan=len(headers),
                                                             sticky="ew", pady=5)
 
+    # Déconnexion de l'utilisateur
     def disconnect(self):
         # Fermer la fenêtre principale
         self.main_frame.destroy()
 
+    # Créer et afficher la frame principale
     def create_main_frame(self, pseudo, transactions):
         lastname, name = pseudo
 
-        # Create a new top-level window for the main frame
+        # Créer une nouvelle fenêtre supérieure pour la frame principale
         self.main_frame = tk.Toplevel(self.root)
         self.main_frame.title("Bank")
 
-        # Set background color of the main frame
+        # Définir la couleur de fond de la frame principale
         self.main_frame.configure(bg="#282b30")
 
-        # Load the background image
+        # Charger l'image de fond
         self.background_image = tk.PhotoImage(file="assets/pattern.png")
-        # Create a label to hold the background image
+        # Créer une étiquette pour contenir l'image de fond
         background_label = ttk.Label(self.main_frame, image=self.background_image)
         background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # Create a new frame to hold all the elements
+        # Créer un nouveau cadre pour contenir tous les éléments
         main_container = tk.Frame(self.main_frame, background="#282b30")
-        main_container.pack(fill="both", expand=True, padx=20, pady=20)  # Added padding
+        main_container.pack(fill="both", expand=True, padx=20, pady=20)  # Ajout de rembourrage
 
-        # Add a label to display the username
+        # Ajouter une étiquette pour afficher le nom d'utilisateur
         ttk.Label(main_container, text="Re-bonjour " + lastname + " " + name + " !", font=("Verdana", 15),
                   background="#282b30", foreground="white").pack(
             side=tk.TOP, pady=10)
@@ -236,16 +239,16 @@ class Frames:
                   foreground="white").pack(side=tk.BOTTOM, pady=10)
         ttk.Button(main_container, text="Déconnexion", command=self.disconnect).pack(side=tk.BOTTOM, pady=10)
 
-        # Create a new frame to display additional information
+        # Créer un nouveau cadre pour afficher des informations supplémentaires
         info_frame = tk.Frame(main_container, background="#36393e")
-        info_frame.pack(side=tk.TOP, padx=10, pady=10, fill="both", expand=True)  # Added fill and expand
+        info_frame.pack(side=tk.TOP, padx=10, pady=10, fill="both", expand=True)  # Ajout de remplissage et d'expansion
 
-        # Headers for the columns
+        # En-têtes pour les colonnes
         headers = ["Nom", "Description", "Montant", "Type", "Date"]
 
         def sort_transactions(col_index):
-            if col_index != 1:  # Do not sort if the column index corresponds to the Description column
-                # Clear existing transaction rows in the info_frame
+            if col_index != 1:  # Ne pas trier si l'index de colonne correspond à la colonne Description
+                # Effacer les lignes de transaction existantes dans info_frame
                 for widget in info_frame.winfo_children():
                     if isinstance(widget, ttk.Label):
                         widget.destroy()
@@ -253,18 +256,18 @@ class Frames:
                 sorted_transactions = sorted(transactions, key=lambda x: x[col_index])
                 self.show_transactions_table(info_frame, headers, sorted_transactions)
 
-        # Create clickable headers
+        # Créer des en-têtes cliquables
         for col, header in enumerate(headers):
             ttk.Button(info_frame, text=header, command=lambda col_index=col: sort_transactions(col_index)).grid(
-                row=0, column=col, padx=5, pady=5, sticky="ew")  # Added sticky
+                row=0, column=col, padx=5, pady=5, sticky="ew")  # Ajout de collant
 
-        # Show initial transactions table
-        # Show initial transactions table
+        # Afficher le tableau de transactions initial
         self.show_transactions_table(info_frame, headers, transactions)
 
-        # Create and display expenses by month graph
+        # Créer et afficher le graphique des dépenses par mois
         self.create_graph(transactions)
 
+    # Créer le graphique des dépenses par mois
     @staticmethod
     def create_graph(transactions):
         # Créer un dictionnaire pour stocker les dépenses par mois
