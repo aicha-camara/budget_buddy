@@ -1,19 +1,20 @@
-import re
-import tkinter.messagebox as msgbox
-from database import check_user
+import re  # Importation du module re pour les expressions régulières
+import tkinter.messagebox as msgbox  # Importation de la boîte de message de tkinter en tant que msgbox
+from database import check_user  # Importation de la fonction check_user depuis le module database
 
-# Define error messages as constants
+# Définition des messages d'erreur en tant que constantes
 ERROR_PASSWORD_MISMATCH = "Les mots de passe ne correspondent pas"
 ERROR_INVALID_EMAIL = "L'email n'est pas valide"
 ERROR_USERNAME_TAKEN = "Un utilisateur avec ce nom d'utilisateur ou email existe déjà"
 ERROR_INVALID_LOGIN = "Nom d'utilisateur ou mot de passe invalide"
+
 class Validator:
-    @staticmethod  # Used to avoid creating an instance of the class
+    @staticmethod  # Utilisé pour éviter de créer une instance de la classe
     def validate_registration(lastname, name, email, password, confirm_password):
-        if password != confirm_password:  # Check if passwords match
+        if password != confirm_password:  # Vérifier si les mots de passe correspondent
             msgbox.showerror("Erreur", ERROR_PASSWORD_MISMATCH)
             return False
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):  # Check if email is valid using regex
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):  # Vérifier si l'email est valide en utilisant regex
             msgbox.showerror("Erreur", ERROR_INVALID_EMAIL)
             return False
         # Vérification si le nom et le prénom sont déjà utilisés
@@ -28,10 +29,10 @@ class Validator:
             return False
         return True
 
-    @staticmethod  # Used to avoid creating an instance of the class
+    @staticmethod  # Utilisé pour éviter de créer une instance de la classe
     def validate_login(lastname, name, password):
         user = check_user(lastname, name, password)
-        if not user:  # Check if user exists
+        if not user:  # Vérifier si l'utilisateur existe
             msgbox.showerror("Erreur", ERROR_INVALID_LOGIN)
             return False
         return True
